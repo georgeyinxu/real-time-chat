@@ -1,13 +1,15 @@
+import { AiOutlineSend, AiOutlinePaperClip } from 'react-icons/ai'
+
 const InputBar = () => (
   <div className='flex'>
     <input
       type='text'
       placeholder='Type here'
-      className='input input-bordered input-primary w-full max-w-xs'
+      className='input input-bordered input-primary w-max max-w-sm'
     />
-    <div className='dropdown dropdown-top'>
-      <label tabIndex={0} className='btn btn-active btn-ghost m-1'>
-        Click
+    <div className='dropdown dropdown-top mx-4'>
+      <label tabIndex={0} className='btn btn-active btn-ghost'>
+        <AiOutlinePaperClip size={24} />
       </label>
       <ul
         tabIndex={0}
@@ -21,7 +23,7 @@ const InputBar = () => (
         </li>
       </ul>
     </div>
-    <button className='btn btn-active btn-ghost'>SEND</button>
+    <button className='btn btn-active btn-ghost'><AiOutlineSend size={24} /></button>
   </div>
 );
 

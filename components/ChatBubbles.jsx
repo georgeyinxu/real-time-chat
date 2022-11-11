@@ -17,7 +17,7 @@ const messages = [
 
 const ChatBubbles = () => (
   <div>
-    <div className='bg-slate-50 w-[700px] items-center overflow-y-auto h-5/6 xs:h-screen'>
+    <div className='bg-slate-700 items-center overflow-y-auto h-5/6 xs:h-screen'>
       {messages.map((msg) => (
         // msg.userid === 123 to change to id of logged in user
         <div
