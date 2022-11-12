@@ -1,4 +1,4 @@
-import { AiOutlineSend, AiOutlinePaperClip } from 'react-icons/ai'
+import { AiOutlineSend, AiOutlinePaperClip } from 'react-icons/ai';
 
 const InputBar = () => (
   <div className='flex'>
@@ -16,14 +16,21 @@ const InputBar = () => (
         className='dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52'
       >
         <li>
-          <a>Upload Image</a>
+          <a href='#image-modal' className='btn'>
+            Upload Image
+          </a>
+        </li>
+        <li className="my-1">
+          <a href='#file-modal' className='btn'>Upload File</a>
         </li>
         <li>
-          <a>Make an offer</a>
+          <a href='#offer-modal' className='btn'>Make an offer</a>
         </li>
       </ul>
     </div>
-    <button className='btn btn-active btn-ghost'><AiOutlineSend size={24} /></button>
+    <button className='btn btn-active btn-ghost'>
+      <AiOutlineSend size={24} />
+    </button>
   </div>
 );
 
