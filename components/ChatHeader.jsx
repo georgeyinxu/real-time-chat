@@ -12,7 +12,7 @@ const ChatHeader = () => (
           <div className="flex-1">
             <div className="btn btn-ghost btn-circle avatar">
               <div className="rounded-full">
-                <Image src="/../public/sample-product-image.webp" width={80} height={80} />
+                <Image src="/../public/sample-product-image.webp" width={80} height={80} alt="Product Image" />
               </div>
             </div>
             <div className="flex-col pl-5">
@@ -53,7 +53,7 @@ const ChatHeader = () => (
           <div className="flex-1">
             <div className="btn btn-circle btn-ghost avatar">
               <div className="w-10 rounded-md">
-                <Image src="/../public/sample-product-image.webp" width={80} height={80} />
+                <Image src="/../public/sample-product-image.webp" width={80} height={80} alt="Product Image"/>
               </div>
               <div className="absolute h-3 bg-white w-10 pb-13 mt-6">
                 <div className="absolute text-[7px] pl-1">Reserved</div>
