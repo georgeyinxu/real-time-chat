@@ -1,8 +1,9 @@
 import supabase from '../supabase';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const ChatBubbles = () => {
   const [allMessages, setAllMessages] = useState([]);
+  const bottomRef = useRef(null);
 
   useEffect(() => {
     fetchMessages();
@@ -34,6 +35,10 @@ const ChatBubbles = () => {
     }
   };
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({behavior: 'smooth'});
+  }, [allMessages]);
+
   return (
     <div>
       <div className='bg-slate-700 items-center'>
@@ -61,6 +66,8 @@ const ChatBubbles = () => {
           </div>
         ))}
       </div>
+
+      <div ref={bottomRef} />
     </div>
   );
 };
