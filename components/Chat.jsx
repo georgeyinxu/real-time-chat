@@ -23,14 +23,14 @@ const Chat = () => {
   }, []);
 
   const fetchMessages = async () => {
-    // const { data: content, error } = await supabase
-    //   .from('contents')
-    //   .select('*');
+    const { data: content, error } = await supabase
+      .from('contents')
+      .select('*');
 
-    const { data: content, error } = await supabase.from('messages').select(`
-    profile_uuid,
-    contents (*)
-  `);
+  //   const { data: content, error } = await supabase.from('messages').select(`
+  //   profile_uuid,
+  //   contents (*)
+  // `);
 
     if (error) {
       console.log('error', error);
@@ -40,24 +40,6 @@ const Chat = () => {
       setAllMessages(content);
     }
   };
-
-  // const getUser = async () => {
-  //   const { data: user } = await supabase.auth.getUser();
-  //   console.log(user);
-
-  //   let { data: id, error } = await supabase
-  //     .from('messages')
-  //     .select('profile_uuid');
-
-  //   console.log(id);
-
-  //   for (let i = 0; i < id.length; i++) {
-  //     if (id[i].profile_uuid === user.id) {
-  //       setUser(true);
-  //       return;
-  //     }
-  //   }
-  // };
 
   return (
     <div>
