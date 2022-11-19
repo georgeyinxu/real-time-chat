@@ -1,29 +1,43 @@
 import supabase from '../supabase';
-import { useEffect, useState, useRef, use } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const ChatBubbles = (messages) => {
   const [user, setUser] = useState('');
+  const [msg, setMsg] = useState([])
   const bottomRef = useRef(null);
-  const allMessages = messages.msg;
+
 
   useEffect(() => {
-    getUser();
+    fetchUserAndMsg();
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+  }, [messages]);
 
   const getUser = async () => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    setUser(user.id)
+    setUser(user.id);
   };
 
+  const fetchUserAndMsg = async () => {
+    const { data: content, error } = await supabase.from('messages').select(`
+      profile_uuid,
+      contents (*)
+    `);
+
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(content);
+      setMsg(content)
+    }
+  };
+  getUser();
 
   return (
     <div>
       <div className='bg-slate-700 items-center'>
-        {allMessages.map((msg) => (
-          // msg.userid === 123 to change to id of logged in user
+        {msg.map((msg) => (
           <div
             className={
               msg.profile_uuid === user
