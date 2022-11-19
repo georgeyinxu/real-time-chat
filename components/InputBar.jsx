@@ -10,6 +10,11 @@ const InputBar = () => {
 
     console.log(messages);
 
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    console.log(user);
+
     // INSERT a row to content table from column 'text'
     // doing this first cos file and images are complicated
     const { data, error: insert_err } = await supabase
@@ -36,7 +41,9 @@ const InputBar = () => {
       .from('messages')
       .insert([
         {
-          content: content_id[content_id.length - 1].content_id,        },
+          content: content_id[content_id.length - 1].content_id,
+          profile_uuid: user.id,
+        },
       ]);
 
     if (insertMsg_err) {
@@ -45,6 +52,7 @@ const InputBar = () => {
       console.log('no error');
       setMessages('');
     }
+    
   };
   return (
     <form onSubmit={handleSubmit}>

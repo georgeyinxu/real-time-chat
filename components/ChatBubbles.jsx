@@ -1,43 +1,23 @@
 import supabase from '../supabase';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, use } from 'react';
 
-const ChatBubbles = () => {
-  const [allMessages, setAllMessages] = useState([]);
+const ChatBubbles = (messages) => {
+  const [user, setUser] = useState('');
   const bottomRef = useRef(null);
+  const allMessages = messages.msg;
 
   useEffect(() => {
-    fetchMessages();
-
-    supabase
-      .channel('public:messages')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'contents' },
-        (payload) => {
-          console.log('Change received!', payload);
-          setAllMessages((current) => [...current, payload.new]);
-        }
-      )
-      .subscribe();
+    getUser();
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
-  const fetchMessages = async () => {
-    const { data: content, error } = await supabase
-      .from('contents')
-      .select('*');
-
-    if (error) {
-      console.log('error', error);
-    } else {
-      console.log('hello');
-      console.log(content);
-      setAllMessages(content);
-    }
+  const getUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    setUser(user.id)
   };
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({behavior: 'smooth'});
-  }, [allMessages]);
 
   return (
     <div>
@@ -46,21 +26,21 @@ const ChatBubbles = () => {
           // msg.userid === 123 to change to id of logged in user
           <div
             className={
-              msg.userid === 123
+              msg.profile_uuid === user
                 ? 'flex justify-end mx-5'
                 : 'flex justify-start mx-5'
             }
-            key={msg.content_id}
+            key={msg.contents.content_id}
           >
             <div
               className={
-                msg.userid === 123
+                msg.profile_uuid === user
                   ? 'bg-info rounded-tl-3xl rounded-tr-3xl rounded-bl-3xl w-auto my-3'
                   : 'bg-base-300 rounded-tl-3xl rounded-tr-3xl rounded-br-3xl w-auto my-3'
               }
             >
               <div className='card-body py-4 px-6'>
-                <p className='min-w-fit max-w-xs'>{msg.text}</p>
+                <p className='min-w-fit max-w-xs'>{msg.contents.text}</p>
               </div>
             </div>
           </div>
