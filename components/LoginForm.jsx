@@ -11,8 +11,6 @@ const LoginForm = () => {
       email,
       password,
     })
-
-    console.log(data)
   }
 
   return (
