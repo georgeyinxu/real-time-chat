@@ -6,11 +6,10 @@ import FileModal from '../../components/FileModal';
 import OfferModal from '../../components/OfferModal';
 
 const RoomPage = () => (
-  <div>
+  <div className="h-screen">
     <Header />
-    <div className='h-screen bg-slate-700 grid grid-cols-4'>
+    <div className='bg-slate-700 grid grid-cols-4'>
       <ChatNavigation />
-
       <div className='col-span-3 relative'>
         <Chat />
       </div>

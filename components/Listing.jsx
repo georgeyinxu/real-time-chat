@@ -4,8 +4,11 @@ const Listing = ({ listing }) => {
   const client = useSupabaseClient();
   const user = client.auth.getUser();
 
-  const handleCreateRoom = async (roomID) => {
-    console.log(await user)
+  const handleCreateRoom = async (seller_uuid) => {
+    console.log('creating...')
+    let userID = await user;
+    const {error} = await client.from('room').insert({ created_at: ((new Date()).toISOString()).toLocaleString('SG'), seller_uuid, buyer_uuid: userID.data.user.id })
+    console.log(error);
   }
 
   return (
@@ -17,7 +20,7 @@ const Listing = ({ listing }) => {
         <h2 className="card-title">{listing.name}</h2>
         <p>{listing.description}</p>
         <div className="card-actions justify-end">
-          <button className="btn btn-primary" onClick={async () => handleCreateRoom(listing.id)}>Chat Now!</button>
+          <button className="btn btn-primary" onClick={async () => handleCreateRoom(listing.seller_uuid)}>Chat Now!</button>
         </div>
       </div>
     </div>

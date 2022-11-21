@@ -8,6 +8,7 @@ const Main = () => {
   useEffect(() => {
     client.from('listings').select().then((res) => { setListings(res.data) })
   }, [])
+  
   return (
     <div>
       <h2 className="text-center font-bold text-xl mb-2">Marketplace Mock Up</h2>
