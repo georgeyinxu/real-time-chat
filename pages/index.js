@@ -1,24 +1,19 @@
-import ChatNavigation from '../components/ChatNavigation';
-import Chat from '../components/Chat';
-import Header from '../components/Header';
-import ImageModal from '../components/ImageModal';
-import FileModal from '../components/FileModal';
-import OfferModal from '../components/OfferModal';
+import SignUpForm from '../components/SignUpForm';
+import Link from 'next/link';
 
-const HomePage = () => (
-  <div>
-    <Header />
-    <div className='h-screen bg-slate-700 grid grid-cols-4'>
-      <ChatNavigation />
-
-      <div className='col-span-3 relative'>
-        <Chat />
+const SignUpPage = () => {
+  return (
+    <div className='flex justify-center items-center h-screen'>
+      <div className='card w-96 bg-base-100 shadow-xl'>
+        <div className='card-body'>
+          <h2 className='card-title'>Sign Up</h2>
+          <SignUpForm />
+          <div className='divider'>OR</div>
+          <h5>Have an account? <Link className='text-cyan-400 underline' href="/signIn">Sign in here</Link></h5>
+        </div>
       </div>
-      <ImageModal />
-      <FileModal />
-      <OfferModal />
     </div>
-  </div>
-);
+  );
+};
 
-export default HomePage;
+export default SignUpPage;

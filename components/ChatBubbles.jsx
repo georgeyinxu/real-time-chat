@@ -1,66 +1,70 @@
 import supabase from '../supabase';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
-const ChatBubbles = () => {
-  const [allMessages, setAllMessages] = useState([]);
+const ChatBubbles = (messages) => {
+  const [user, setUser] = useState('');
+  const [msg, setMsg] = useState([]);
+  const bottomRef = useRef(null);
 
   useEffect(() => {
-    fetchMessages();
+    getUser();
+    fetchUserAndMsg();
+  }, [messages]);
 
-    supabase
-      .channel('public:messages')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'contents' },
-        (payload) => {
-          console.log('Change received!', payload);
-          setAllMessages((current) => [...current, payload.new]);
-        }
-      )
-      .subscribe();
-  }, []);
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, msg]);
 
-  const fetchMessages = async () => {
-    const { data: content, error } = await supabase
-      .from('contents')
-      .select('*');
+  const getUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    console.log(user);
+    setUser(user.id);
+  };
+
+  const fetchUserAndMsg = async () => {
+    const { data: content, error } = await supabase.from('messages').select(`
+      profile_uuid,
+      contents (*)
+    `);
 
     if (error) {
-      console.log('error', error);
+      console.log(error);
     } else {
-      console.log('hello');
       console.log(content);
-      setAllMessages(content);
+      setMsg(content);
     }
   };
 
   return (
     <div>
-      <div className='bg-slate-700 items-center overflow-y-auto xs:h-screen'>
-        {allMessages.map((msg) => (
-          // msg.userid === 123 to change to id of logged in user
+      <div className='bg-slate-700 items-center'>
+        {msg.map((msg) => (
           <div
             className={
-              msg.userid === 123
+              msg.profile_uuid === user
                 ? 'flex justify-end mx-5'
                 : 'flex justify-start mx-5'
             }
-            key={msg.content_id}
+            key={msg.contents.content_id}
           >
             <div
               className={
-                msg.userid === 123
+                msg.profile_uuid === user
                   ? 'bg-info rounded-tl-3xl rounded-tr-3xl rounded-bl-3xl w-auto my-3'
                   : 'bg-base-300 rounded-tl-3xl rounded-tr-3xl rounded-br-3xl w-auto my-3'
               }
             >
               <div className='card-body py-4 px-6'>
-                <p className='min-w-fit max-w-xs'>{msg.text}</p>
+                <p className='min-w-fit max-w-xs'>{msg.contents.text}</p>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      <div ref={bottomRef} />
     </div>
   );
 };
