@@ -3,19 +3,23 @@ import { useEffect, useState, useRef } from 'react';
 
 const ChatBubbles = (messages) => {
   const [user, setUser] = useState('');
-  const [msg, setMsg] = useState([])
+  const [msg, setMsg] = useState([]);
   const bottomRef = useRef(null);
 
+  useEffect(() => {
+    getUser();
+    fetchUserAndMsg();
+  }, [messages]);
 
   useEffect(() => {
-    fetchUserAndMsg();
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, msg]);
 
   const getUser = async () => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+    console.log(user);
     setUser(user.id);
   };
 
@@ -29,10 +33,9 @@ const ChatBubbles = (messages) => {
       console.log(error);
     } else {
       console.log(content);
-      setMsg(content)
+      setMsg(content);
     }
   };
-  getUser();
 
   return (
     <div>
