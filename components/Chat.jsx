@@ -27,11 +27,6 @@ const Chat = () => {
       .from('contents')
       .select('*');
 
-  //   const { data: content, error } = await supabase.from('messages').select(`
-  //   profile_uuid,
-  //   contents (*)
-  // `);
-
     if (error) {
       console.log('error', error);
     } else {

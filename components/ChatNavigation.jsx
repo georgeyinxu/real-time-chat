@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import supabase from '../supabase';
 
 const ChatNavigation = () => {
   const [rooms, setRooms] = useState([]);
   const [userID, setUserID] = useState('');
   const client = useSupabaseClient();
-  const user = client.auth.getUser();
+  const user = supabase.auth.getUser();
 
   useEffect(() => {
     const fetchUserID = async () => {
       const userDetails = await user;
+      console.log(userDetails);
       setUserID(userDetails.data.user.id);
-    }
+    };
 
     fetchUserID();
 
@@ -20,7 +22,7 @@ const ChatNavigation = () => {
       .select()
       .then((res) => {
         setRooms(res.data);
-        console.log(rooms)
+        console.log(rooms);
       });
   }, []);
 
@@ -30,15 +32,13 @@ const ChatNavigation = () => {
       <div className='drawer-side'>
         <label htmlFor='my-drawer-2' className='drawer-overlay'></label>
         <ul className='menu p-4 w-80 bg-base-100 text-base-content'>
-          {
-            rooms.map(room => {
-              return (
-                <li key={room.id}>
+          {rooms.map((room) => {
+            return (
+              <li key={room.id}>
                 <a>Room {room.room_id}</a>
               </li>
-              )
-            })
-          }
+            );
+          })}
         </ul>
       </div>
     </div>
